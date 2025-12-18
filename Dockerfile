@@ -1,7 +1,6 @@
-# Multi-stage build for optimized size
-FROM python:3.10-slim as base
+FROM python:3.10-slim 
 
-# Set environment variables to reduce memory usage
+
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
@@ -9,17 +8,12 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-# Install system dependencies (minimal)
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy only requirements first for better caching
-COPY requirements.txt .
-
-# Install Python packages with minimal memory
-# Install packages one by one to avoid memory spikes
 RUN pip install --no-cache-dir Flask==3.1.2 && \
     pip install --no-cache-dir gunicorn==23.0.0 && \
     pip install --no-cache-dir pillow==12.0.0 && \
@@ -31,22 +25,21 @@ RUN pip install --no-cache-dir Flask==3.1.2 && \
     pip install --no-cache-dir pymongo==4.10.1 && \
     pip install --no-cache-dir requests==2.32.3
 
-# Copy application files
+
 COPY flask_app.py .
 COPY streamlit_app.py .
 COPY model.pt .
 
-# Set environment variable for model path
 ENV MODEL_PATH=/app/model.pt
 
-# Expose ports
+
 EXPOSE 5000 8501
 
-# Health check
+
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:5000/')" || exit 1
 
-# Create startup script
+
 RUN echo '#!/bin/bash\n\
 # Start Flask in background with limited workers\n\
 gunicorn --bind 0.0.0.0:5000 \
