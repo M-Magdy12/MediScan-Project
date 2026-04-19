@@ -1,4 +1,4 @@
-# 🏥 MediScan - AI Deployment Project (Docker + Terraform + Github Actions)
+# 🏥 MediScan - AI Deployment Project (Docker + Terraform )
 
 MediScan is an AI-powered medical image classification application deployed as a complete DevOps project.
 
@@ -25,7 +25,7 @@ In this project, my main contributions include:
  Preparing the project for deployment (dependencies, structure, runtime)  
  Infrastructure provisioning using **Terraform** (`terraform.tf`)  
  Ensuring the application can run locally and in cloud environments  
- Setting up GitHub Actions CI/CD pipelines for automated testing, building Docker images, and deployment on every push or pull request
+
  
 
 ---
@@ -36,7 +36,7 @@ This project contains:
   
 - Docker setup for containerized deployment  
 - Terraform scripts for cloud provisioning
-- Github Actions for CI/CD
+
 
 ---
 
@@ -55,7 +55,6 @@ This project contains:
 - Docker
 - Terraform
 - Linux
-- Github Actions
 
 ---
 
